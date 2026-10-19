@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Shehbde/rng-data/schema/patterns.schema.json",
+  "title": "RNG patterns.json",
+  "description": "Chat, scoreboard, tab-list, nametag and GUI-title regexes (Java regex syntax, run on formatting-stripped text). Keys and named groups are a contract with the mod. Read by dev.rng.data.DataLoader#parsePatterns.",
+  "type": "object",
+  "required": ["version", "patterns"],
+  "additionalProperties": false,
+  "properties": {
+    "version": {"type": "integer", "minimum": 0},
+    "notes": {"type": "string"},
+    "patterns": {
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": {"pattern": "^[a-z][A-Za-z0-9]*(\\.[A-Za-z0-9_]+)+$", "maxLength": 100},
+      "additionalProperties": {"$ref": "#/$defs/pattern"}
+    },
+    "dropTiers": {
+      "description": "Chat prefix (e.g. \"VERY RARE\") to drop tier",
+      "type": "object",
+      "propertyNames": {"pattern": "^[A-Z][A-Z ]*$", "maxLength": 40},
+      "additionalProperties": {"$ref": "#/$defs/dropTier"}
+    },
+    "suppressSounds": {
+      "description": "Vanilla sound events muted while the spoiler shield is up",
+      "type": "array",
+      "items": {"type": "string", "pattern": "^[a-z0-9_.\\-]+:[a-z0-9_/.\\-]+$", "maxLength": 128}
+    }
+  },
+  "$defs": {
+    "dropTier": {"enum": ["COMMON", "UNCOMMON", "RARE", "VERY_RARE", "CRAZY_RARE", "PRAY_TO_RNGESUS", "INSANE", "PET"]},
+    "pattern": {
+      "description": "Either a bare regex string or {regex, verified, source}",
+      "type": ["string", "object"],
+      "minLength": 1,
+      "maxLength": 1000,
+      "required": ["regex"],
+      "additionalProperties": false,
+      "properties": {
+        "regex": {"type": "string", "minLength": 1, "maxLength": 1000},
+        "verified": {"type": "boolean"},
+        "source": {"type": ["string", "null"], "maxLength": 400}
+      }
+    }
+  }
+}

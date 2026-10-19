@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Shehbde/rng-data/schema/manifest.schema.json",
+  "title": "RNG data manifest.json",
+  "description": "Written by the publish workflow. Lists every data file under bundle/ with its SHA-256 and size. The mod downloads bundle/<name> relative to this file.",
+  "type": "object",
+  "required": ["schemaVersion", "bundleVersion", "minModVersion", "files", "updatedAt"],
+  "properties": {
+    "schemaVersion": {
+      "description": "Manifest format version; the mod ignores manifests newer than it understands",
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 1000
+    },
+    "bundleVersion": {
+      "description": "Raised by the publish workflow on every change; players update when it is higher than what they have",
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 2147483647
+    },
+    "minModVersion": {
+      "description": "Oldest RNG mod version that may use this data (semantic version)",
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(-[0-9A-Za-z.\\-]+)?(\\+[0-9A-Za-z.\\-]+)?$",
+      "maxLength": 64
+    },
+    "updatedAt": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+    },
+    "files": {
+      "type": "object",
+      "required": ["sources.json", "items.json", "drops.json", "patterns.json", "signatures.json"],
+      "propertyNames": {"pattern": "^[a-z][a-z0-9_]*\\.json$", "maxLength": 64},
+      "additionalProperties": {"$ref": "#/$defs/file"}
+    }
+  },
+  "$defs": {
+    "file": {
+      "type": "object",
+      "required": ["sha256", "size"],
+      "additionalProperties": false,
+      "properties": {
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "size": {"type": "integer", "minimum": 1, "maximum": 5242880}
+      }
+    }
+  }
+}

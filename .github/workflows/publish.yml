@@ -1,0 +1,75 @@
+# Validates every data file against its JSON Schema and, on main, bumps bundleVersion and rewrites manifest.json
+# (sha256 + size of every file in bundle/). Players' mods download manifest.json and only accept files whose
+# checksums match it, so nothing reaches players unless this workflow passed.
+#
+# Loop protection: the manifest commit is made with the built-in GITHUB_TOKEN (whose pushes never start workflows),
+# carries [skip ci], is authored by github-actions[bot] (skipped below) and only touches manifest.json, which is
+# not in the path filter.
+name: Validate and publish data
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "bundle/**"
+      - "schema/**"
+      - "scripts/**"
+      - ".github/workflows/publish.yml"
+  pull_request:
+    paths:
+      - "bundle/**"
+      - "schema/**"
+      - "scripts/**"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publish-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: github.actor != 'github-actions[bot]' && !contains(github.event.head_commit.message, '[skip ci]')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0 # full history: bundleVersion never goes below any version published before
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Install jsonschema
+        run: python -m pip install --disable-pip-version-check "jsonschema==4.26.0"
+
+      - name: Validate data
+        run: python scripts/publish.py
+
+      - name: Bump version and publish manifest
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          for attempt in 1 2 3; do
+            git fetch --quiet origin main
+            git reset --quiet --hard origin/main
+            # validates the latest main again before writing anything
+            python scripts/publish.py --write
+            if [ -z "$(git status --porcelain -- manifest.json)" ]; then
+              echo "manifest.json already matches bundle/; nothing to publish"
+              exit 0
+            fi
+            version=$(python -c "import json; print(json.load(open('manifest.json'))['bundleVersion'])")
+            git add manifest.json
+            git commit --quiet -m "Publish data v${version} [skip ci]"
+            if git push --quiet origin HEAD:main; then
+              echo "### Published data v${version}" >> "$GITHUB_STEP_SUMMARY"
+              exit 0
+            fi
+            echo "main moved while publishing; retrying ($attempt)"
+          done
+          exit 1

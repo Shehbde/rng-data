@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "signatures": [
+    {"ending": "scatha", "itemIds": [], "idPrefixes": ["SCATHA;"], "params": {}},
+    {"ending": "warden_heart", "itemIds": ["WARDEN_HEART"], "idPrefixes": [], "params": {}},
+    {"ending": "judgement_core", "itemIds": ["JUDGEMENT_CORE"], "idPrefixes": [], "params": {}},
+    {"ending": "overflux", "itemIds": ["OVERFLUX_CAPACITOR"], "idPrefixes": [], "params": {}},
+    {"ending": "necron_handle", "itemIds": ["NECRON_HANDLE", "SHINY_NECRON_HANDLE"], "idPrefixes": [], "params": {}}
+  ]
+}

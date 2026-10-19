@@ -1,0 +1,124 @@
+{
+  "version": 1,
+  "notes": "All regexes run on formatting-stripped text. Sources: tools/research/*.md (SkyHanni/Skyblocker/Firmament regex tests, hypixelskyblock.minecraft.wiki). Keys are referenced from Java; named groups are part of the contract.",
+  "patterns": {
+    "chat.drop": {
+      "regex": "^(?!.*:)(?<tier>RARE|VERY RARE|CRAZY RARE|INSANE|PET|UNCOMMON|PRAY TO RNGESUS) DROP!\\s+(?<rest>.+?)\\s*$",
+      "verified": true,
+      "source": "Skyblocker RareDropSpecialEffects / SkyHanni regex tests; tools/research/messages-slayer-mining-farming-combat-diana.md §1"
+    },
+    "chat.rareCrop": {
+      "regex": "^(?!.*:)(?<tier>RARE|VERY RARE) CROP!\\s+(?<rest>.+?)\\s*$",
+      "verified": true,
+      "source": "SkyHanni RareCropTracker tests"
+    },
+    "chat.dropBonus": {
+      "regex": "\\s*\\((?<bonus>\\+[^()]*)\\)(?:\\s*\\(automatically donated\\))?\\s*$",
+      "verified": true,
+      "source": "trailing (+N% ✯ Magic Find) / (+N<overbloom>)"
+    },
+    "chat.magicFind": {
+      "regex": "\\+(?<mf>[\\d,.]+)%?\\s*\\S*\\s*Magic Find",
+      "verified": true,
+      "source": "Magic Find suffix; icon is ✯ or U+E01A"
+    },
+    "chat.dropWrapper": {
+      "regex": "^(?:You dug out (?:a |an )?|You dropped )(?<item>.+?)!?$",
+      "verified": true,
+      "source": "Diana treasure / Crop Fever drop lines"
+    },
+    "chat.countPrefix": {
+      "regex": "^(?<count>\\d+)x (?<item>.+)$",
+      "verified": true,
+      "source": "(2x Foul Flesh)"
+    },
+    "chat.countSuffix": {
+      "regex": "^(?<item>.+?) x(?<count>\\d+)$",
+      "verified": true,
+      "source": "pest drops: Mutant Nether Wart x9"
+    },
+    "chat.otherPlayerDrop": {
+      "regex": "^(?:\\[[^\\]]+\\] )?\\w{3,16} has obtained .+!$",
+      "verified": true,
+      "source": "lobby broadcast '<player> has obtained [Lvl 1] Bal!'"
+    },
+    "chat.profile": {
+      "regex": "^You are playing on profile: (?<profile>[\\w ]+?)(?: \\(.*\\))?$",
+      "verified": true,
+      "source": "SkyHanni chat-filter profile-join"
+    },
+    "chat.slayerStarted": {"regex": "^\\s*SLAYER QUEST STARTED!$", "verified": true, "source": "SkyHanni SlayerApi"},
+    "chat.slayerBossSlain": {"regex": "^\\s*NICE! SLAYER BOSS SLAIN!$", "verified": true, "source": "SkyHanni ChatFilter"},
+    "chat.slayerComplete": {"regex": "^\\s*SLAYER QUEST COMPLETE!$", "verified": true, "source": "SkyHanni/Skyblocker"},
+    "chat.slayerFailed": {"regex": "^\\s*SLAYER QUEST FAILED!$", "verified": true, "source": "SkyHanni/Skyblocker"},
+    "chat.slayerCancelled": {"regex": "^Your Slayer Quest has been cancelled!$", "verified": true, "source": "Skyblocker"},
+    "chat.slayerCocooned": {"regex": "^\\s*YOU COCOONED YOUR SLAYER BOSS$", "verified": true, "source": "SkyHanni/Skyblocker"},
+    "chat.rngMeter": {"regex": "^\\s*RNG Meter - (?<xp>[\\d,]+) Stored XP$", "verified": true, "source": "Skyblocker"},
+    "chat.wormSpawn": {
+      "regex": "^You hear the sound of something approaching\\.\\.\\.$",
+      "verified": true,
+      "source": "Scatha / Stoneworm spawn (personal); creature decided by nametag"
+    },
+    "chat.dianaDig": {
+      "regex": "^(?:Oh|Uh oh|Yikes|Oi|Good Grief|Danger|Woah)! You dug out (?:a |an )?(?<mob>[A-Za-z' ]+)!$",
+      "verified": true,
+      "source": "SkyHanni GriffinBurrowHelper tests"
+    },
+    "chat.dianaPrefixes": {
+      "regex": "^(?:Blessed|Stalwart|Venerable|Exalted|Empyrean) ",
+      "verified": true,
+      "source": "Griffin rarity prefixes on Diana mob names"
+    },
+    "chat.doubleHook": {"regex": "^It's a Double Hook!(?: Woot woot!)?$", "verified": true, "source": "fishing double hook"},
+    "chat.dungeonEnd": {
+      "regex": "^\\s*(?<master>Master Mode )?The Catacombs - Floor (?<floor>[IV]+|Entrance)$",
+      "verified": true,
+      "source": "end-of-run chat header"
+    },
+    "chat.kuudraDown": {"regex": "^\\s*KUUDRA DOWN!$", "verified": true, "source": "Kuudra end of fight"},
+    "scoreboard.area": {"regex": "^\\s*[⏣ф] (?<area>.+)$", "verified": true, "source": "SkyHanni ScoreboardPattern"},
+    "scoreboard.dungeonFloor": {"regex": "The Catacombs \\((?<floor>[FM][1-7]|E)\\)", "verified": true, "source": " ⏣ The Catacombs (F7)"},
+    "scoreboard.kuudraTier": {"regex": "Kuudra's Hollow \\(T(?<tier>[1-5])\\)", "verified": true, "source": " ⏣ Kuudra's Hollow (T5)"},
+    "scoreboard.slayerQuest": {"regex": "^Slayer Quest$", "verified": true, "source": "SkyHanni SlayerApi"},
+    "scoreboard.slayBoss": {"regex": "^Slay the boss!$", "verified": true, "source": "SkyHanni SlayerApi"},
+    "scoreboard.bossSlain": {"regex": "^Boss slain!$", "verified": true, "source": "SkyHanni SlayerApi"},
+    "tab.profile": {"regex": "^Profile: (?<profile>[\\w ]+?)(?:\\s*[♲Ⓑ☀].*)?$", "verified": true, "source": "tab list widget"},
+    "tab.area": {"regex": "^Area: (?<area>.+)$", "verified": true, "source": "tab list widget"},
+    "nametag.slayerBoss": {
+      "regex": "^(?:\\[Lv\\d+\\] )?(?:\\S+ )?☠ (?<name>[A-Za-z' ]+?)(?: (?<tier>IV|V|I{1,3}))? (?<hp>[\\d.,]+[kMB]?)(?:/(?<max>[\\d.,]+[kMB]?))?[❤\\uE010]$",
+      "verified": true,
+      "source": "SkyHanni MobFilter REGEX-TESTs; heart can be U+2764 or U+E010"
+    },
+    "nametag.slayerBossHits": {
+      "regex": "^(?:\\[Lv\\d+\\] )?(?:\\S+ )?☠ (?<name>[A-Za-z' ]+?)(?: (?<tier>IV|V|I{1,3}))? (?<hits>\\d+) Hits?$",
+      "verified": true,
+      "source": "Voidgloom hits-shield phase"
+    },
+    "nametag.spawnedBy": {"regex": "^Spawned by: (?<player>\\w{1,16})$", "verified": true, "source": "SkyHanni/Skyblocker"},
+    "nametag.creature": {
+      "regex": "^(?:\\[Lv\\d+\\] )?(?:[^A-Za-z\\[]+ )?(?<name>[A-Z][A-Za-z' ]+?)(?: ᛤ)? (?<hp>[\\d.,]+[kMB]?)/(?<max>[\\d.,]+[kMB]?)[❤\\uE010]$",
+      "verified": true,
+      "source": "sea creature / Diana mob nametag: [Lv597] Lord Jawbus 100M/100M❤"
+    },
+    "title.dungeonChest": {"regex": "^(?<chest>Wood|Gold|Diamond|Emerald|Obsidian|Bedrock)(?: Chest)?$", "verified": true, "source": "Skyblocker/SkyHanni"},
+    "title.kuudraChest": {"regex": "^(?<chest>Free|Paid) Chest(?: Chest)?$", "verified": true, "source": "Hypixel doubles the word"},
+    "title.croesus": {"regex": "^(?:\\(\\d+/\\d+\\) )?(?:Croesus|Vesuvius)$", "verified": true, "source": "Croesus / Vesuvius menus"},
+    "title.croesusDungeonRun": {"regex": "^(?<master>Master )?Catacombs - Floor (?<floor>[IV]+)$", "verified": true, "source": "Croesus per-run view"},
+    "title.croesusKuudraRun": {"regex": "^Kuudra - (?<tier>Basic|Hot|Burning|Fiery|Infernal)$", "verified": true, "source": "Vesuvius per-run view"},
+    "lore.openReward": {"regex": "^Open Reward Chest$", "verified": true, "source": "slot 31 button name"},
+    "lore.alreadyOpened": {"regex": "^(?:Already opened!|You already opened this chest!?)$", "verified": false, "source": "Croesus lore; needs in-game check"}
+  },
+  "dropTiers": {
+    "RARE": "RARE",
+    "VERY RARE": "VERY_RARE",
+    "CRAZY RARE": "CRAZY_RARE",
+    "INSANE": "INSANE",
+    "PET": "PET",
+    "UNCOMMON": "UNCOMMON",
+    "PRAY TO RNGESUS": "PRAY_TO_RNGESUS"
+  },
+  "suppressSounds": [
+    "minecraft:block.note_block.pling",
+    "minecraft:entity.player.levelup"
+  ]
+}

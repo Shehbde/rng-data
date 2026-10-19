@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Shehbde/rng-data/schema/items.schema.json",
+  "title": "RNG items.json",
+  "description": "Display data for every referenced item (name, rarity, icon). Read by dev.rng.data.DataLoader#parseItems.",
+  "type": "object",
+  "required": ["version", "items"],
+  "additionalProperties": false,
+  "properties": {
+    "version": {"type": "integer", "minimum": 0},
+    "notes": {"type": "string"},
+    "items": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/item"}
+    }
+  },
+  "$defs": {
+    "itemId": {
+      "description": "Hypixel SkyBlock item id (NEU style), e.g. WARDEN_HEART or SCATHA;4",
+      "type": "string",
+      "pattern": "^[A-Z0-9_:;\\-]+$",
+      "maxLength": 64
+    },
+    "namespacedId": {
+      "type": ["string", "null"],
+      "pattern": "^[a-z0-9_.\\-]+:[a-z0-9_/.\\-]+$",
+      "maxLength": 128
+    },
+    "rarity": {"enum": ["COMMON", "UNCOMMON", "RARE", "EPIC", "LEGENDARY", "MYTHIC", "DIVINE", "SPECIAL", "VERY_SPECIAL", "ULTIMATE", "ADMIN"]},
+    "item": {
+      "type": "object",
+      "required": ["id", "name", "rarity"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {"$ref": "#/$defs/itemId"},
+        "name": {"type": "string", "minLength": 1, "maxLength": 100},
+        "rarity": {"$ref": "#/$defs/rarity"},
+        "material": {
+          "description": "Vanilla item id used for the icon, e.g. minecraft:player_head; null falls back to paper",
+          "$ref": "#/$defs/namespacedId"
+        },
+        "skullTexture": {
+          "description": "Base64 texture property for player heads",
+          "type": ["string", "null"],
+          "pattern": "^[A-Za-z0-9+/=]+$",
+          "maxLength": 4000
+        },
+        "dyeColor": {"type": "integer", "minimum": -1, "maximum": 16777215},
+        "glint": {"type": "boolean"},
+        "itemModel": {
+          "description": "Hypixel resource-pack model, e.g. hypixel_skyblock:item/...; only used when the pack is loaded",
+          "$ref": "#/$defs/namespacedId"
+        }
+      }
+    }
+  }
+}

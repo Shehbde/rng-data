@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Shehbde/rng-data/schema/drops.schema.json",
+  "title": "RNG drops.json",
+  "description": "Every rare item with all the sources that drop it. Read by dev.rng.data.DataLoader#parseDrops.",
+  "type": "object",
+  "required": ["version", "drops"],
+  "additionalProperties": false,
+  "properties": {
+    "version": {"type": "integer", "minimum": 0},
+    "notes": {"type": "string"},
+    "drops": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/drop"}
+    }
+  },
+  "$defs": {
+    "itemId": {
+      "type": "string",
+      "pattern": "^[A-Z0-9_:;\\-]+$",
+      "maxLength": 64
+    },
+    "sourceId": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*(\\.[a-z0-9_]+)+$",
+      "maxLength": 64
+    },
+    "rarity": {"enum": ["COMMON", "UNCOMMON", "RARE", "EPIC", "LEGENDARY", "MYTHIC", "DIVINE", "SPECIAL", "VERY_SPECIAL", "ULTIMATE", "ADMIN"]},
+    "dropTier": {"enum": ["COMMON", "UNCOMMON", "RARE", "VERY_RARE", "CRAZY_RARE", "PRAY_TO_RNGESUS", "INSANE", "PET"]},
+    "drop": {
+      "type": "object",
+      "required": ["itemId", "name", "rarity", "sources"],
+      "additionalProperties": false,
+      "properties": {
+        "itemId": {"$ref": "#/$defs/itemId"},
+        "name": {"type": "string", "minLength": 1, "maxLength": 100},
+        "rarity": {"$ref": "#/$defs/rarity"},
+        "signature": {"type": "boolean"},
+        "sources": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"$ref": "#/$defs/sourceChance"}
+        }
+      }
+    },
+    "sourceChance": {
+      "type": "object",
+      "required": ["source", "dropTier"],
+      "additionalProperties": false,
+      "properties": {
+        "source": {"$ref": "#/$defs/sourceId"},
+        "chance": {
+          "description": "Probability per attempt, 0 < chance <= 1; null when unknown",
+          "type": ["number", "null"],
+          "exclusiveMinimum": 0,
+          "maximum": 1
+        },
+        "chanceText": {"type": ["string", "null"], "maxLength": 400},
+        "dropTier": {"$ref": "#/$defs/dropTier"},
+        "verified": {"type": "boolean"},
+        "wiki": {"type": ["string", "null"], "pattern": "^https?://\\S+$", "maxLength": 300}
+      }
+    }
+  }
+}

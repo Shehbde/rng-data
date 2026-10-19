@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Shehbde/rng-data/schema/signatures.schema.json",
+  "title": "RNG signatures.json",
+  "description": "Maps items to the signature endings built into the mod (scatha, warden_heart, ...). Read by dev.rng.data.DataLoader#parseSignatures.",
+  "type": "object",
+  "required": ["version", "signatures"],
+  "additionalProperties": false,
+  "properties": {
+    "version": {"type": "integer", "minimum": 0},
+    "notes": {"type": "string"},
+    "signatures": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/signature"}
+    }
+  },
+  "$defs": {
+    "signature": {
+      "type": "object",
+      "required": ["ending"],
+      "additionalProperties": false,
+      "properties": {
+        "ending": {
+          "description": "Id of a signature ending that exists in the mod",
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "maxLength": 64
+        },
+        "itemIds": {
+          "type": "array",
+          "items": {"type": "string", "pattern": "^[A-Z0-9_:;\\-]+$", "maxLength": 64}
+        },
+        "idPrefixes": {
+          "type": "array",
+          "items": {"type": "string", "pattern": "^[A-Z0-9_:;\\-]+$", "maxLength": 64}
+        },
+        "params": {
+          "type": "object",
+          "additionalProperties": {"type": ["string", "number", "boolean"]}
+        }
+      }
+    }
+  }
+}

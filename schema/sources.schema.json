@@ -1,0 +1,119 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Shehbde/rng-data/schema/sources.schema.json",
+  "title": "RNG sources.json",
+  "description": "Every activity that can produce a rare drop (slayer tier, dungeon floor, sea creature, ...) with its loot pool. Read by dev.rng.data.DataLoader#parseSource.",
+  "type": "object",
+  "required": ["version", "sources"],
+  "additionalProperties": false,
+  "properties": {
+    "version": {"$ref": "#/$defs/fileVersion"},
+    "notes": {"type": "string"},
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/source"}
+    }
+  },
+  "$defs": {
+    "fileVersion": {"type": "integer", "minimum": 0},
+    "itemId": {
+      "description": "Hypixel SkyBlock item id (NEU style), e.g. WARDEN_HEART or SCATHA;4",
+      "type": "string",
+      "pattern": "^[A-Z0-9_:;\\-]+$",
+      "maxLength": 64
+    },
+    "sourceId": {
+      "description": "Dotted lowercase id, e.g. slayer.revenant.t5",
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*(\\.[a-z0-9_]+)+$",
+      "maxLength": 64
+    },
+    "namespacedId": {
+      "type": "string",
+      "pattern": "^[a-z0-9_.\\-]+:[a-z0-9_/.\\-]+$",
+      "maxLength": 128
+    },
+    "category": {"enum": ["SLAYER", "DUNGEON", "KUUDRA", "FISHING", "MINING", "FARMING", "COMBAT", "DIANA"]},
+    "trigger": {"enum": ["SUSPENSE", "SURPRISE"]},
+    "rarity": {"enum": ["COMMON", "UNCOMMON", "RARE", "EPIC", "LEGENDARY", "MYTHIC", "DIVINE", "SPECIAL", "VERY_SPECIAL", "ULTIMATE", "ADMIN"]},
+    "dropTier": {"enum": ["COMMON", "UNCOMMON", "RARE", "VERY_RARE", "CRAZY_RARE", "PRAY_TO_RNGESUS", "INSANE", "PET"]},
+    "text": {"type": "string", "minLength": 1, "maxLength": 400},
+    "optionalText": {"type": ["string", "null"], "maxLength": 400},
+    "wiki": {"type": ["string", "null"], "pattern": "^https?://\\S+$", "maxLength": 300},
+    "chance": {
+      "description": "Probability per attempt, 0 < chance <= 1; null when unknown",
+      "type": ["number", "null"],
+      "exclusiveMinimum": 0,
+      "maximum": 1
+    },
+    "stringList": {"type": "array", "items": {"type": "string"}},
+    "source": {
+      "type": "object",
+      "required": ["id", "category", "trigger", "displayName", "lootPool"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {"$ref": "#/$defs/sourceId"},
+        "category": {"$ref": "#/$defs/category"},
+        "trigger": {"$ref": "#/$defs/trigger"},
+        "displayName": {"$ref": "#/$defs/text"},
+        "group": {"$ref": "#/$defs/text"},
+        "oddsUnit": {"$ref": "#/$defs/text"},
+        "bustItemId": {"anyOf": [{"$ref": "#/$defs/itemId"}, {"type": "null"}]},
+        "maxHp": {"type": ["integer", "null"], "minimum": 1},
+        "defaultStyle": {"type": ["string", "null"], "pattern": "^[a-z][a-z0-9_]*$", "maxLength": 64},
+        "waitWindowMs": {"type": "integer", "minimum": 0, "maximum": 10000},
+        "minTier": {"$ref": "#/$defs/dropTier"},
+        "detect": {"$ref": "#/$defs/detect"},
+        "verified": {"type": "boolean"},
+        "wiki": {"$ref": "#/$defs/wiki"},
+        "lootPool": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"$ref": "#/$defs/lootEntry"}
+        }
+      }
+    },
+    "lootEntry": {
+      "type": "object",
+      "required": ["itemId", "name", "rarity", "dropTier"],
+      "additionalProperties": false,
+      "properties": {
+        "itemId": {"$ref": "#/$defs/itemId"},
+        "name": {"$ref": "#/$defs/text"},
+        "rarity": {"$ref": "#/$defs/rarity"},
+        "chance": {"$ref": "#/$defs/chance"},
+        "chanceText": {"$ref": "#/$defs/optionalText"},
+        "dropTier": {"$ref": "#/$defs/dropTier"},
+        "rare": {"type": "boolean"},
+        "weight": {"type": "integer", "minimum": 0, "maximum": 1000000},
+        "verified": {"type": "boolean"},
+        "wiki": {"$ref": "#/$defs/wiki"},
+        "chest": {"type": ["string", "null"], "pattern": "^[A-Z][A-Z_]*$", "maxLength": 32},
+        "tierDerived": {"type": "boolean"}
+      }
+    },
+    "detect": {
+      "description": "Category-specific detection hints. Keys read by Java are typed here; other keys are notes and may hold any JSON.",
+      "type": "object",
+      "properties": {
+        "slayerType": {"type": "string", "pattern": "^[a-z]+$"},
+        "tier": {"type": ["integer", "string"], "minimum": 1, "minLength": 1},
+        "bossName": {"$ref": "#/$defs/text"},
+        "tierNumeral": {"type": "string", "pattern": "^[IVX]+$"},
+        "scoreboardName": {"$ref": "#/$defs/text"},
+        "altBossNames": {"$ref": "#/$defs/stringList"},
+        "entityTypes": {"type": "array", "items": {"$ref": "#/$defs/namespacedId"}},
+        "floor": {"type": "string", "pattern": "^[FM][1-7]$"},
+        "creatureName": {"$ref": "#/$defs/text"},
+        "catchMessage": {"$ref": "#/$defs/text"},
+        "catchMessageRegex": {"type": "string", "minLength": 1, "maxLength": 1000},
+        "messageRegex": {"type": "string", "minLength": 1, "maxLength": 1000},
+        "areas": {"$ref": "#/$defs/stringList"},
+        "chestTitles": {"$ref": "#/$defs/stringList"},
+        "croesusChestNames": {"$ref": "#/$defs/stringList"},
+        "mobLevel": {"type": "integer", "minimum": 0}
+      }
+    }
+  }
+}
