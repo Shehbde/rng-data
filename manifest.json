@@ -1,20 +1,16 @@
 {
   "schemaVersion": 1,
-  "bundleVersion": 1,
+  "bundleVersion": 2,
   "minModVersion": "0.1.0-alpha",
-  "updatedAt": "2026-10-19T12:13:26Z",
+  "updatedAt": "2026-10-19T12:20:16Z",
   "files": {
-    "sources.json": {
-      "sha256": "895d321829765f36fafc6135ba6ee9c6fd4d7a0387fbd778446daf45c9e49237",
-      "size": 579828
+    "drops.json": {
+      "sha256": "11d428560064c7c5d62fea86ad85eddbe5f5520ef31add11897ef26b76196bb3",
+      "size": 258459
     },
     "items.json": {
       "sha256": "0dfd65df1ddf332cdd061dd639ad0de19a5331f7df04416eae8a1ee0e540028a",
       "size": 231299
-    },
-    "drops.json": {
-      "sha256": "11d428560064c7c5d62fea86ad85eddbe5f5520ef31add11897ef26b76196bb3",
-      "size": 258459
     },
     "patterns.json": {
       "sha256": "f807427ed9952dcf738695568cf82162d50b052d5d0260f919b8b1d7974bbc28",
@@ -23,6 +19,10 @@
     "signatures.json": {
       "sha256": "277a6f52deffc61acf3207ffe342e8411d8f399509f339b919ddc1bd107ba092",
       "size": 526
+    },
+    "sources.json": {
+      "sha256": "ee64e7e03e009f56bacd3c3fa84f4833e94f260e4b37c76515592f68b9bac264",
+      "size": 579842
     }
   }
 }
