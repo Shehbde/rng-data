@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "bundleVersion": 2,
+  "bundleVersion": 3,
   "minModVersion": "0.1.0-alpha",
-  "updatedAt": "2026-10-19T12:20:16Z",
+  "updatedAt": "2026-10-19T12:25:23Z",
   "files": {
     "drops.json": {
       "sha256": "11d428560064c7c5d62fea86ad85eddbe5f5520ef31add11897ef26b76196bb3",
@@ -21,8 +21,8 @@
       "size": 526
     },
     "sources.json": {
-      "sha256": "ee64e7e03e009f56bacd3c3fa84f4833e94f260e4b37c76515592f68b9bac264",
-      "size": 579842
+      "sha256": "895d321829765f36fafc6135ba6ee9c6fd4d7a0387fbd778446daf45c9e49237",
+      "size": 579828
     }
   }
 }
