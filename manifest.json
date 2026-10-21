@@ -1,28 +1,28 @@
 {
   "schemaVersion": 1,
-  "bundleVersion": 3,
+  "bundleVersion": 6,
   "minModVersion": "0.1.0-alpha",
-  "updatedAt": "2026-10-19T12:25:23Z",
+  "updatedAt": "2026-10-21T12:37:12Z",
   "files": {
     "drops.json": {
-      "sha256": "11d428560064c7c5d62fea86ad85eddbe5f5520ef31add11897ef26b76196bb3",
-      "size": 258459
+      "sha256": "aba136b99ecb237d430566ec318ad6a55a02a170dab8a5c3e8b428378e2c2f78",
+      "size": 351742
     },
     "items.json": {
-      "sha256": "0dfd65df1ddf332cdd061dd639ad0de19a5331f7df04416eae8a1ee0e540028a",
-      "size": 231299
+      "sha256": "c1a1afef92ba88830040664aa658da4af9846c4906bb83b1df5512fd1192e6aa",
+      "size": 341204
     },
     "patterns.json": {
-      "sha256": "f807427ed9952dcf738695568cf82162d50b052d5d0260f919b8b1d7974bbc28",
-      "size": 7138
+      "sha256": "6f12a72de8931f47c4d55e7775c3f6a9ea85d5966f12be7e6bf1f63f154e861b",
+      "size": 12325
     },
     "signatures.json": {
       "sha256": "277a6f52deffc61acf3207ffe342e8411d8f399509f339b919ddc1bd107ba092",
       "size": 526
     },
     "sources.json": {
-      "sha256": "895d321829765f36fafc6135ba6ee9c6fd4d7a0387fbd778446daf45c9e49237",
-      "size": 579828
+      "sha256": "6a51bcfe2237cde59491c0f7d2d21c5e0ba23b82acbe9707a768f0b044ab8254",
+      "size": 837352
     }
   }
 }
